@@ -1,0 +1,111 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Main container: two equal columns */
+.login-container {
+  display: flex;         /* FLEXBOX ensures side-by-side layout */
+  height: 100vh;         /* Full viewport height */
+}
+
+/* Left side login form*/
+.login-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #141F35;
+}
+
+.login-form-wrapper {
+  width: 80%;
+  max-width: 350px;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-size: 50px;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #0073e6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #005bb5;
+}
+
+/* Links */
+.links {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.links a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* Right side - background image */
+.login-right {
+  flex: 1; /* Take other 50% */
+  background-image: url(images/Silvershield_logo.png);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+  .login-right {
+    display: none;
+  }
+}
