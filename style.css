@@ -8,27 +8,9 @@
 html, body {
   height: 100%;
   font-family: Arial, sans-serif;
-}
-
-/* Main container: two equal columns */
-.login-container {
-  display: flex;         /* FLEXBOX ensures side-by-side layout */
-  height: 100vh;         /* Full viewport height */
-}
-
-/* Left side login form*/
-.login-left {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #141F35;
 }
 
-.login-form-wrapper {
-  width: 80%;
-  max-width: 350px;
-}
 
 h1 {
   margin-bottom: 0.5rem;
@@ -71,6 +53,9 @@ p {
   cursor: pointer;
   margin-top: 10px;
 }
+.btn > a {
+    color: white;
+}
 
 .btn:hover {
   background: #005bb5;
@@ -92,20 +77,3 @@ p {
   text-decoration: underline;
 }
 
-/* Right side - background image */
-.login-right {
-  flex: 1; /* Take other 50% */
-  background-image: url(images/Silvershield_logo.png);
-  background-size: cover;
-  background-position: center;
-}
-
-/* Responsive: stack on small screens */
-@media (max-width: 768px) {
-  .login-container {
-    flex-direction: column;
-  }
-  .login-right {
-    display: none;
-  }
-}

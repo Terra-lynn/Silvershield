@@ -1,44 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Silvershield Login</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Shield Home Page</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="landingStyle.css">
+
 </head>
-<body>
-  <div class="login-container">
-    
-    <!-- Left side: Login form -->
-    <div class="login-left">
-      <div class="login-form-wrapper">
-        <h1>Welcome</span></h1>
-        <p>Please log in to continue.</p>
-
-        <form class="login-form">
-          <div class="form-group">
-            <label for="username">Email or Username</label>
-            <input type="text" id="username" name="username" required>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-          </div>
-
-          <button type="submit" class="btn">Log In</button>
-
-          <div class="links">
-            <a href="#">Forgot password?</a>
-            <span> | </span>
-            <a href="#">Create account</a>
-          </div>
-        </form>
+  <body>
+    <div class="loginBanner">
+      <h1>Silver Shield</h1>
+      <div class="loginRegisterButtons">
+        <button class ="loginButton" value="login"><a href="login.html">Log In</a></button>
+        <button class="btn" style="margin-top:0px;" value="register"><a href="register.html">Register</a></button>
       </div>
     </div>
+    <div class="introImageInformation">
+        <!--
+            <image width="100%" src="https://i.imgur.com/7wIFgUe.jpeg"></image>
+    -->
+       <image class="imageContainer" src="https://images.pexels.com/photos/3791664/pexels-photo-3791664.jpeg"></image>
+        <div class="imageText">
+            <h1>Browse with confidence</h1>
+            <h1><spam class="emphasizedBlue">And Safety</spam></h1>
+        </div>
 
-    <!-- Right side: Background image -->
-    <div class="login-right"></div>
-  </div>
-</body>
+        <h1>AI-driven lessons <span class="emphasizedBlue">engineered to help you</span></h1>
+        <p>With a guide powered by <span class="emphasizedBlue">A</span>rtificial <span class="emphasizedBlue">I</span>ntelligence, browse simulated spaces and learn how to identify spam and scams in a <span class="emphasizedBlue">safe and practical</span> way.</p>
+        <a href="register.html">Register now</a>
+
+    </div>
+  </body>
 </html>
