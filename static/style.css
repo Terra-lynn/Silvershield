@@ -12,8 +12,8 @@ html, body {
 
 /* Main container: two equal columns */
 .login-container {
-  display: flex;         /* FLEXBOX ensures side-by-side layout */
-  height: 100vh;         /* Full viewport height */
+  display: flex;
+  height: 100vh;
 }
 
 /* Left side login form*/
@@ -34,6 +34,12 @@ h1 {
   margin-bottom: 0.5rem;
   color: white;
   font-size: 50px;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-size: 25px;
 }
 
 p {
@@ -108,4 +114,74 @@ p {
   .login-right {
     display: none;
   }
+}
+
+/* Account creation stylesheet */
+
+/* Main account creation container */
+.account-creation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Account creation form*/
+.account-center {
+  width: 800px;
+  height: 600px;
+  background-color: #141F35;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.account-creation-wrapper {
+  width: 80%;
+  max-width: 300px;
+}
+
+/* Account inputs */
+.account-form-group {
+  margin-bottom: 1rem;
+}
+
+.account-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.account-form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+/* Multi-step Form */
+.slide {
+  display: none;
+  transition: all 0.5s ease;
+}
+
+.slide.active {
+  display: block;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 2.5px;
+    padding-top: 3px;
 }
