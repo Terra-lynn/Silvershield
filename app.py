@@ -4,10 +4,20 @@ import sqlite3
 
 app = Flask(__name__)
 
+#Page routes
 @app.route('/')
 def index():
+    return render_template("homePage.html")
+
+@app.route('/login')
+def login():
+    return render_template("loginPage.html")
+
+@app.route('/account_creation')
+def account_creation():
     return render_template("accountCreation.html")
 
+#Registration route after submission
 @app.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
@@ -19,6 +29,8 @@ def register():
     success, message = user_registration(username, password, email, phone, address)
     return jsonify(success=success, message=message)
 
+
+#Validation routes
 @app.route('/check_username')
 def check_username():
     username = request.args.get("username")
@@ -26,11 +38,10 @@ def check_username():
     if not username:
         return jsonify({"exists": False})
 
-    connection = sqlite3.connect("silvershieldDatabase.db")
-    cursor = connection.cursor()
-    cursor.execute("SELECT 1 FROM users WHERE username = ?", (username,))
-    exists = cursor.fetchone() is not None
-    connection.close()
+    with sqlite3.connect("silverShield.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM users WHERE username = ?", (username,))
+        exists = cursor.fetchone() is not None
 
     return jsonify({"exists": exists})
 
@@ -41,13 +52,14 @@ def check_email():
     if not email:
         return jsonify({"exists": False})
 
-    connection = sqlite3.connect("silvershieldDatabase.db")
-    cursor = connection.cursor()
-    cursor.execute("SELECT 1 FROM users WHERE email = ?", (email,))
-    exists = cursor.fetchone() is not None
-    connection.close()
+    with sqlite3.connect("silverShield.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM users WHERE email = ?", (email,))
+        exists = cursor.fetchone() is not None
 
     return jsonify({"exists": exists})
 
+
+#Main
 if __name__ == '__main__':
     app.run(debug=True)
