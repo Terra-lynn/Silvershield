@@ -10,6 +10,11 @@ const streetAddressInput = document.getElementById("street-address");
 const cityInput = document.getElementById("city");
 const stateInput = document.getElementById("state");
 const zipCodeInput = document.getElementById("zip-code");
+const sendOTPBtn = document.getElementById("send-otp-btn");
+const verifyOTPBtn = document.getElementById("verify-otp-btn");
+const otpSection = document.getElementById("otp-section");
+const otpError = document.getElementById("otp-error");
+
 
 //Current slide
 let currentSlide = 1;
@@ -342,59 +347,6 @@ async function validateAddress()
     return streetValid && cityValid && stateValid && zipValid;
 }
 
-//Next button events
-nextButtons.forEach(btn => {
-    btn.addEventListener("click", async(e) => {
-        e.preventDefault();
-
-        //Performing validation for the current step
-        let letProceed = true;
-
-
-        //Switch case for each slide
-        switch(currentSlide)
-        {
-            case 1: //Username Slide
-                let usernameValue = usernameInput.value.trim();
-                letProceed = await validateUsername(usernameValue);
-                break;
-            case 2: //Password slide
-                let passwordValue = passwordInput.value.trim();
-                letProceed = await validatePassword(passwordValue);
-                break;
-            case 3: //Email slide
-                let emailValue = emailInput.value.trim();
-                letProceed = await validateEmail(emailValue);
-                break;
-            case 4: //Phone number slide
-                let phoneValue = phoneInput.value.trim();
-                letProceed = await validatePhone(phoneValue);
-                break;
-            case 5: //Address slide
-                letProceed = await validateAddress();
-                break;
-            default:
-                letProceed = true;
-        }
-
-        if (letProceed)
-        {
-            showSlide(currentSlide + 1);
-        }
-    });
-});
-
-//Back button events
-backButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if(currentSlide > 1)
-        {
-            showSlide(currentSlide - 1);
-        }
-    });
-});
-
 //Submit button events
 submit.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -430,3 +382,109 @@ submit.addEventListener("click", async (e) => {
         alert("Registration failed: " + result.message);
     }
 });
+
+sendOTPBtn.addEventListener("click", async () => {
+    const phone = phoneInput.value.trim();
+
+    if(!phone)
+        {
+            return;
+        }
+
+    const response = await fetch("/send_otp", {
+        method: "POST",
+        body: new URLSearchParams({phone})
+    });
+
+    const result = await response.json();
+    if(result.success)
+    {
+        otpSection.style.display = "block";
+        otpError.textContent = "OTP sent to your phone";
+    }
+    else
+    {
+        otpError.textContent = result.message;
+    }
+})
+
+verifyOTPBtn.addEventListener("click", async () => {
+    const phone = phoneInput.value.trim();
+    const code = document.getElementById("otp-code").value.trim();
+
+    const response = await fetch("/verify_otp", {
+        method: "POST",
+        body: new URLSearchParams({ phone, code })
+    });
+
+    const result = await response.json();
+    if (result.success) {
+        alert("Phone verified!");
+        otpError.textContent = "Phone verified!";
+        otpSection.style.display = "none";
+        document.querySelector("#slide4 .next-btn").disabled = false;
+    } else {
+        otpError.textContent = result.message;
+    }
+});
+
+//Next button events
+nextButtons.forEach(btn => {
+    btn.addEventListener("click", async(e) => {
+        e.preventDefault();
+
+        //Performing validation for the current step
+        let letProceed = true;
+
+
+        //Switch case for each slide
+        switch(currentSlide)
+        {
+            case 1: //Username Slide
+                let usernameValue = usernameInput.value.trim();
+                letProceed = await validateUsername(usernameValue);
+                break;
+            case 2: //Password slide
+                let passwordValue = passwordInput.value.trim();
+                letProceed = await validatePassword(passwordValue);
+                break;
+            case 3: //Email slide
+                let emailValue = emailInput.value.trim();
+                letProceed = await validateEmail(emailValue);
+                break;
+            case 4: //Phone number slide
+                let phoneValue = phoneInput.value.trim();
+                letProceed = await validatePhone(phoneValue);
+
+                //Check if OTP verified
+                const otpMessage = otpError.textContent.toLowerCase();
+                if (!otpMessage.includes("verified"))
+                {
+                    otpError.textContent = "Please verify your phone number before continuing.";
+                    letProceed = false;
+                }
+                break;
+            case 5: //Address slide
+                letProceed = await validateAddress();
+                break;
+            default:
+                letProceed = true;
+        }
+
+        if (letProceed)
+        {
+            showSlide(currentSlide + 1);
+        }
+    });
+});
+
+//Back button events
+backButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if(currentSlide > 1)
+        {
+            showSlide(currentSlide - 1);
+        }
+    });
+})
