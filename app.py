@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from user_login import user_registration
+from user_login import user_registration, verifying_login
 from TWOFA import send_otp, verify_otp
 import sqlite3
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 def index():
     return render_template("homePage.html")
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login():
     return render_template("loginPage.html")
 
@@ -30,6 +30,26 @@ def register():
     success, message = user_registration(username, password, email, phone, address)
     return jsonify(success=success, message=message)
 
+
+#Login route for credential validation and OTP verification
+@app.route('/login', methods=['POST'])
+def login_post():
+    usernameorEmail = request.form['username'].strip()
+    password = request.form['password'].strip()
+
+    valid, phone = verifying_login(usernameorEmail, password)
+
+    if not valid:
+        return jsonify({"success": False, "message": "Invalid username or password"})
+
+    if not phone.startswith("+"):
+        phone = "+1" + phone
+
+    try:
+        send_otp(phone)
+        return jsonify({"success": True, "otp_sent": True, "phone": phone})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)})
 
 #Validation routes
 @app.route('/check_username')

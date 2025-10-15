@@ -1,7 +1,8 @@
-//Getting buttons
+//Registration elements
 const nextButtons = document.querySelectorAll(".next-btn")
 const backButtons = document.querySelectorAll(".back-btn")
 const submit = document.getElementById("submit")
+
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const emailInput = document.getElementById("email");
@@ -10,13 +11,25 @@ const streetAddressInput = document.getElementById("street-address");
 const cityInput = document.getElementById("city");
 const stateInput = document.getElementById("state");
 const zipCodeInput = document.getElementById("zip-code");
+
 const sendOTPBtn = document.getElementById("send-otp-btn");
 const verifyOTPBtn = document.getElementById("verify-otp-btn");
 const otpSection = document.getElementById("otp-section");
 const otpError = document.getElementById("otp-error");
 
+//Login elements
+const loginSlides = document.querySelectorAll(".login-slide")
+const loginUsername = document.getElementById("login-username");
+const loginPassword = document.getElementById("login-password");
+const loginOTPCodeInput = document.getElementById("login-otp-code");
+const loginOtpError = document.querySelector(".login-otp-error");
 
-//Current slide
+//login buttons
+const loginNext = document.querySelector(".login-next");
+const loginVerifyOTPBtn = document.querySelector(".login-verify-otp-btn");
+
+let currentPhoneReg = "";
+let currentPhoneLogin = "";
 let currentSlide = 1;
 
 //Slide function
@@ -28,6 +41,16 @@ function showSlide(slideNumber)
     if (slide)
         slide.classList.add("active");
     currentSlide = slideNumber;
+}
+
+function showLoginSlide(slideNumber)
+{
+    loginSlides.forEach(slide => slide.classList.remove("active"));
+    const slide = document.getElementById(`login-slide${slideNumber}`);
+    if (slide)
+    {
+        slide.classList.add("active");
+    }
 }
 
 //Error function
@@ -43,6 +66,65 @@ function errorElement(input)
 
     return error;
 }
+
+loginNext.addEventListener("click", async () => {
+    const username = loginUsername.value.trim();
+    const password = loginPassword.value.trim();
+
+    if (!username || !password)
+    {
+        alert ("Please fill in username and password");
+        return;
+    }
+
+    const response = await fetch("/login", {
+        method: "POST",
+        body: new URLSearchParams({username, password})
+    });
+
+    const result = await response.json();
+
+    if (!result.success)
+    {
+        alert(result.message);
+        return;
+    }
+
+    if (result.otp_sent)
+    {
+        currentPhoneLogin = result.phone;
+        showLoginSlide(2);
+        loginOTPCodeInput.focus();
+        loginOtpError.textContent = "OTP sent to your registered phone";
+    }
+})
+
+loginVerifyOTPBtn.addEventListener("click", async () => {
+    const code = loginOTPCodeInput.value.trim();
+
+    if (!code)
+    {
+        loginOtpError.textContent = "Please enter the OTP.";
+        return;
+    }
+
+    const response = await fetch("/verify_otp", {
+       method: "POST",
+       body: new URLSearchParams({phone: currentPhoneLogin, code})
+    });
+
+    const result = await response.json();
+
+    if (result.success)
+    {
+        alert("Login successful!");
+        window.location.href = "/";
+    }
+    else
+    {
+       loginOtpError.textContent = result.message;
+    }
+});
 
 async function validateUsername(usernameValue)
 {
@@ -347,42 +429,6 @@ async function validateAddress()
     return streetValid && cityValid && stateValid && zipValid;
 }
 
-//Submit button events
-submit.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    //Validating all fields before submission
-    const usernameValid = await validateUsername(usernameInput.value.trim());
-    const passwordValid = await validatePassword(passwordInput.value.trim());
-    const emailValid = await validateEmail(emailInput.value.trim());
-    const phoneValid = await validatePhone(phoneInput.value.trim());
-    const addressValid =await validateAddress();
-
-    if (!usernameValid || !passwordValid || !emailValid || !phoneValid || !addressValid)
-    {
-        return;
-    }
-
-    //Form submission if all inputs are valid
-    const formData = new FormData(document.getElementById("signupForm"));
-
-    const response = await fetch("/register", {
-        method: "POST",
-        body: formData
-    });
-
-    const result = await response.json();
-
-    if(result.success)
-    {
-        alert("Registration successful");
-    }
-    else
-    {
-        alert("Registration failed: " + result.message);
-    }
-});
-
 sendOTPBtn.addEventListener("click", async () => {
     const phone = phoneInput.value.trim();
 
@@ -401,6 +447,7 @@ sendOTPBtn.addEventListener("click", async () => {
     {
         otpSection.style.display = "block";
         otpError.textContent = "OTP sent to your phone";
+        currentPhoneReg = phone;
     }
     else
     {
@@ -488,3 +535,40 @@ backButtons.forEach(btn => {
         }
     });
 })
+
+//Submit button events
+submit.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    //Validating all fields before submission
+    const usernameValid = await validateUsername(usernameInput.value.trim());
+    const passwordValid = await validatePassword(passwordInput.value.trim());
+    const emailValid = await validateEmail(emailInput.value.trim());
+    const phoneValid = await validatePhone(phoneInput.value.trim());
+    const addressValid =await validateAddress();
+
+    if (!usernameValid || !passwordValid || !emailValid || !phoneValid || !addressValid)
+    {
+        return;
+    }
+
+    //Form submission if all inputs are valid
+    const formData = new FormData(document.getElementById("signupForm"));
+
+    const response = await fetch("/register", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if(result.success)
+    {
+        alert("Registration successful");
+        window.location.href = "/";
+    }
+    else
+    {
+        alert("Registration failed: " + result.message);
+    }
+});
