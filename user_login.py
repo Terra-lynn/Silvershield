@@ -26,17 +26,15 @@ def user_registration(username, password, email, phone, address):
     finally:
         connect.close()
 
-def verifying_login (username, password):
+def verifying_login (usernameOrEmail, password):
     connect = connecting_to_database()
     cursor = connect.cursor()
-    cursor.execute("SELECT password_hash, phone FROM users WHERE username = ?", (username,))
+    cursor.execute("SELECT password_hash, phone FROM users WHERE username = ? OR email = ?", (usernameOrEmail, usernameOrEmail))
     result = cursor.fetchone()
     connect.close()
 
     if result and check_password_hash(result['password_hash'], password):
         phone = result['phone']
-        send_otp(phone) #This is the 2FA function
-        return True
+        return True, phone
     else:
-        print("Invalid credentials")
-        return False
+        return False, None
