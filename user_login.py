@@ -1,6 +1,5 @@
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from TWOFA import send_otp
 
 def connecting_to_database():
     connect = sqlite3.connect('silvershieldDatabase.db')
