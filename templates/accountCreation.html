@@ -60,9 +60,17 @@
                             <li>Please input a phone number that receives text messages for login verification purposes</li>
                         </ul>
 
+                        <button id = "send-otp-btn" type = "button" class = "btn">Send OTP</button>
+
+                        <div id="otp-section" style="display:none;">
+                            <input type = "text" id = "otp-code" placeholder= "Enter OTP">
+                            <button id = "verify-otp-btn" type = "button">Verify OTP</button>
+                            <div id = "otp-error" class = "error-message"></div>
+                        </div>
+
                         <div class = "btn-group">
                             <button class = "btn back-btn" type = "button">Back</button>
-                            <button class = "btn next-btn" type = "button">Continue</button>
+                            <button class = "btn next-btn" type = "button" disabled>Continue</button>
                         </div>
                     </div> 
 
@@ -94,7 +102,6 @@
         </div>
     </div>
 
-    
-  <script src="../static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

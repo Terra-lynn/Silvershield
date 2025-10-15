@@ -26,6 +26,27 @@
   background-position: center;
 }
 
+/* Error message styles */
+.login-otp-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 2.5px;
+    padding-top: 3px;
+}
+
+.login-otp-error.success {
+    color: green;
+}
+
+/* Login slides */
+.login-slide {
+    display:none;
+}
+
+.login-slide.active {
+    display: block;
+}
+
 /* Responsive: stack on small screens */
 @media (max-width: 768px) {
   .login-container {

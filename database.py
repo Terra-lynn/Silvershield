@@ -7,7 +7,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                 username TEXT UNIQUE NOT NULL,
                 email TEXT UNIQUE NOT NULL,
                 phone TEXT UNIQUE NOT NULL,
-                address TEXT UNIQUE NOT NULL,
+                address TEXT NOT NULL,
                 password_hash TEXT NOT NULL )
 ''')
 connect.commit()
