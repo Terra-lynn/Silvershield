@@ -16,7 +16,72 @@
                 <span class = "camera">⚫</span>
                 <span class = "icons">📶 🛜 🔋</span>
             </div>
+
+            <div class="apps">
+                <h2>Select an app:</h2>
+                <div class="app-buttons">
+                    <button onclick="loadScenario('email')">Email</button>
+                    <button onclick="loadScenario('sms')">Text</button>
+                    <button onclick="loadScenario('call')">Call</button>
+                    <button onclick="loadScenario('web')">Web</button>
+                </div>
+            </div>
+
+            <div id="scenario" class="scenario not shown">
+                <h3 id="scenarioTitle"></h3>
+                <p id="scenarioContent"></p>
+
+                <div class="actions">
+                    <button onclick="analyze('scam')">Mark as Scam</button>
+                    <button onclick="analyze('not_scam')">Looks Safe</button>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+
+                 <button onclick="loadScenario(currentType)">Next Scenario</button>
+            </div>
+        </div>
+
+        <script>
+            let currentMessage ="";
+            let currentType ="";
+
+            async function loadScenario(type){
+                currentType=type;
+                document.getElementById('scenario').classList.remove('hidden');
+                document.getElementById('feedback').innerText = "Loading...";
+
+                const res = await fetch('/api/generate_scenario', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({type})
+                });
+                const data = await res.json();
+                const sc= data.scenario;
+
+                document.getElementById('scenarioTitle').innerText = sc.title || "New Message";
+                document.getElementById('scenarioContent').innerText = sc.content;
+                currentMessage = sc.content;
+                document.getElementById('feedback').innerText="";
+            }
+
+            async function analyze(choice) {
+                const res = await fetch('/api/analyze', {
+                    method:'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({
+                        user_choice: choice,
+                        message: currentMessage
+                    })
+                });
+                const data = await res.json();
+                const fd = data.feedback;
+                document.getElementById('feedback').innerText = (fd.correct ? "Correct! " : "Incorrect. ") + (fd.feedback || "");
+
+            }
+        </script>
+
     </main>
-    <script src="interact.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

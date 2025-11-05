@@ -153,7 +153,7 @@ if(loginVerifyOTPBtn)
         if (result.success)
         {
             alert("Login successful!");
-            window.location.href = "/";
+            window.location.href = "/dashboard";
         }
         else
         {
