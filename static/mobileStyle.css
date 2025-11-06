@@ -50,22 +50,53 @@
     font-size: 1.8em;
 }
 
+.app-buttons{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    justify-items: center;
+    padding: 30px 0;
+}
+
 .app-buttons button{
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    font-size: 16px;
-    border-radius: 10px;
+    background: none;
     border: none;
     cursor: pointer;
-    background-color: #0078ff;
-    color:white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transfrom 0.2s ease;
+}
+
+.app-buttons button img{
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.apps-buttons button span{
+    font-size: 1.2em;
+    color: #1a1a1a;
+    font-weight: 600;
 }
 
 .app-buttons button:hover {
-    background-color: #005dc1;
+    transform: scale(1.08);
 }
 
+.apps{
+    background: linear-gradient(180deg, #d8e1f3 0%, #f4f6f8 100%);
+    border-radius: 30px;
+    margin: 20px;
+    padding: 20px;
+}
+
+
+/*
 .scenario{
     margin-top: 20px;
     text-align: left;

@@ -634,3 +634,47 @@ sendOTPBtn.addEventListener("click", async () => {
         otpError.textContent = result.message;
     }
 })
+
+let currentMessage ="";
+let currentType ="";
+
+async function loadScenario(type){
+    currentType=type;
+
+    const container = document.getElementById("scenarioBody");
+    container.innerHTML="<p>Loading...</p>";
+
+    try{
+        const res = await fetch("/api/generate_scenario", {
+            method: "POST",
+            headers: {"Content-Type": "spplication/json"},
+            body:JSON.stringify({type})
+        });
+
+    const data = await res.json();
+    const sc= data.scenario;
+    currentMessage = sc.content;
+
+    // HTML Section for different UI with buttons!
+
+    document.getElementById('scenarioTitle').innerText = sc.title || "New Message";
+    document.getElementById('scenarioContent').innerText = sc.content;
+    currentMessage = sc.content;
+    document.getElementById('feedback').innerText="";
+}
+
+async function analyze(choice) {
+    const res = await fetch('/api/analyze', {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+            user_choice: choice,
+            message: currentMessage
+        })
+    });
+    const data = await res.json();
+    const fd= data.feedback;
+    document.getElementById('feedback').innerText = (fd.correct ? "✅ Correct! " : "❌ Incorrect. ") + (fd.feedback || "");
+
+            }
+

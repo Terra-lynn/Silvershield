@@ -164,30 +164,39 @@ def call_ollama(prompt, model="mistral"):
 def generate_scenario():
     data = request.get_json()
     scenario_type = data.get("type", "email")
-    intent = data.get("intent", "random")  # random scenarios
+    #intent = data.get("intent", "random")  # random scenarios
     difficulty = data.get("difficulty", "easy")
 
+    # LLM changes depending on type
     prompt = f"""
-    You are a cybersecurity training assistant for elderly users.
-    Generate a realistic {scenario_type} {intent} message for a training simulation.
+    You are a cybersecurity educator for elderly users.
+    Generate a realistic {scenario_type} scenario for a training simulation.
     Difficulty: {difficulty}.
-    Include short, clear content suitable for a smartphone screen. 
-
-    Return JSON:
+    
+    The output should be in JSON format:
     {{
-        "title": "string (for inbox or caller name)",
-        "content": "string(actual message or dialogue)",
+        "sender": "Name of sender, calller, or website",
+        "sender_logo_prompt" : "Short image prompt for logo/avatar (e.g., 'friendly tech support logo', 'delivery 
+        company logo')",
+        "subject": "Subject line or title (for emails/web only)",
+        "content": "The full messsage, call script, or webpage text shown to the user.",
         "label" : "scam" or "not_scam",
-        "clues" : ["list of clues for feedback"]
+        "clues": ["list of signs that reveal it's a scam."]
     }}
-
-        """
+    
+    If the type is:
+    - 'email': generate a fake inbox email
+    - 'sms' : generate a text message
+    - 'call' : generate a short fake call transcript or voicemail text
+    - 'web' : generate a fake website warning or search result scam 
+    """
 
     result = call_ollama(prompt)
+
     try:
         scenario = json.loads(result)
-    except Exception as e:
-        scenario = {"content": result}
+    except Exception:
+        scenario = {"content": result, "label":"unknown"}
 
     return jsonify(success=True, scenario=scenario)
 
