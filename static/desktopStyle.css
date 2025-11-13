@@ -61,7 +61,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 35px;
+    height: 55px;
     background-color: rgba(217, 217, 217);
     display: flex;
     justify-content: space-between;
@@ -79,8 +79,8 @@ body {
 }
 
 .menuIcon {
-    width: 24px;
-    height: 35px;
+    width: 50px;
+    height: 55px;
     background-image: url(images/MenuIcon.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -88,8 +88,8 @@ body {
 }
 
 .searchIcon {
-    width: 155px;
-    height: 35px;
+    width: 255px;
+    height: 55px;
     margin-right: 10px;
     background-image: url(images/searchBar.png);
     background-size: contain;
@@ -104,8 +104,8 @@ body {
 }
 
 .cornerIcon {
-    width: 200px;
-    height: 35px;
+    width: 300px;
+    height: 55px;
     padding: 0;
     background-image: url(images/cornerIcons.png);
     background-size: contain;
