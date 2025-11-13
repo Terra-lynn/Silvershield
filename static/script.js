@@ -609,28 +609,65 @@ async function validateAddress()
 }
 
 console.log("sendOTPBtn:", sendOTPBtn);
-sendOTPBtn.addEventListener("click", async () => {
-    const phone = phoneInput.value.trim();
+if(sendOTPBtn)
+{
+    sendOTPBtn.addEventListener("click", async () => {
+        const phone = phoneInput.value.trim();
 
-    if(!phone)
+        if(!phone)
+            {
+                return;
+            }
+
+        const response = await fetch("/send_otp", {
+            method: "POST",
+            body: new URLSearchParams({phone})
+        });
+
+        const result = await response.json();
+        if(result.success)
         {
-            return;
+            otpSection.style.display = "block";
+            otpError.textContent = "OTP sent to your phone";
+            currentPhoneReg = phone;
         }
-
-    const response = await fetch("/send_otp", {
-        method: "POST",
-        body: new URLSearchParams({phone})
+        else
+        {
+            otpError.textContent = result.message;
+        }
     });
+}
 
-    const result = await response.json();
-    if(result.success)
-    {
-        otpSection.style.display = "block";
-        otpError.textContent = "OTP sent to your phone";
-        currentPhoneReg = phone;
+/*************************
+      Email Functions
+**************************/
+document.addEventListener("DOMContentLoaded", () => {
+    const emailIcon = document.querySelector('.icon.email');
+    const emailWindow = document.getElementById('emailWindow');
+
+    const internetIcon = document.querySelector('.icon.internet');
+    const internetWindow = document.getElementById('internetWindow');
+
+    if (emailIcon && emailWindow) {
+        emailIcon.addEventListener('click', () => {
+            emailWindow.style.display = 'block';
+        });
     }
-    else
-    {
-        otpError.textContent = result.message;
+
+    if (internetIcon && internetWindow) {
+        internetIcon.addEventListener('click', () => {
+            internetWindow.style.display = 'block';
+        });
     }
-})
+
+    const closeBtn = document.querySelectorAll('.popup-close');
+    closeBtn.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const popup = btn.closest('.popup');
+            if (popup)
+            {
+                popup.style.display = 'none';
+            }
+        });
+    });
+});
