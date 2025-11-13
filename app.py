@@ -129,7 +129,7 @@ def logout():
 
 @app.route('/module1')
 def module1():
-    return render_template("moduel1.html")
+    return render_template("desktopPage.html")
 
 
 @app.route('/module2')
