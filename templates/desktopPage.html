@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop Module</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='desktopStyle.css') }}">
+</head>
+    <body>
+        <div class = "desktop">
+            <!-- Email Icon -->
+            <div class = "icon email"></div>
+            <!-- Internet Icon-->
+            <div class = "icon internet"></div>
+        </div>
+
+        <!-- Bottom Taskbar -->
+        <div class = "taskbar">
+            <div class = "taskbar-left">
+                <div class = "menuIcon"></div>
+                <div class = "searchIcon"></div>
+            </div>
+
+            <div class = "taskbar-right">
+                <div class = "cornerIcon"></div>
+            </div>
+        </div>
+
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
+</html>

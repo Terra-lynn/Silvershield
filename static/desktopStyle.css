@@ -1,0 +1,114 @@
+/* Desktop Background */
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url(images/Background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Desktop Icons  */
+.icon {
+    width: 64px;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    position: absolute;
+    text-align: center;
+}
+
+/* Email Icon */
+.icon.email {
+    top: 100px;
+    left: 100px;
+    height: 70px;
+    background-image: url(images/gmailIcon.png);
+    background-repeat: no-repeat;
+}
+
+.icon.email::after {
+    content: "Email";
+    display: block;
+    margin-top: 75px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+/*Internet Icon */
+.icon.internet {
+    top: 230px;
+    left: 100px;
+    height: 65px;
+    background-image: url(images/internetIcon.png);
+    background-repeat: no-repeat;
+}
+
+.icon.internet::after {
+    content: "Internet";
+    display: block;
+    margin-top: 75px;
+    margin-left: -10px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Taskbar Icons*/
+.taskbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    background-color: rgba(217, 217, 217);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    color: white;
+    font-family: sans-serif;
+}
+
+/* Taskbar - Left */
+.taskbar-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.menuIcon {
+    width: 24px;
+    height: 35px;
+    background-image: url(images/MenuIcon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.searchIcon {
+    width: 155px;
+    height: 35px;
+    margin-right: 10px;
+    background-image: url(images/searchBar.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.taskbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cornerIcon {
+    width: 200px;
+    height: 35px;
+    padding: 0;
+    background-image: url(images/cornerIcons.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
