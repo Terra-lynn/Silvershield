@@ -635,46 +635,148 @@ sendOTPBtn.addEventListener("click", async () => {
     }
 })
 
+
+
 let currentMessage ="";
 let currentType ="";
 
-async function loadScenario(type){
-    currentType=type;
 
-    const container = document.getElementById("scenarioBody");
-    container.innerHTML="<p>Loading...</p>";
+// loader for each module template
+async function loadScenario(appType) {
+    currentType = appType;
+    const scenarioBody = document.getElementById("scenarioBody");
 
-    try{
+    //Hide apps
+    document.querySelector(".apps").style.display="none";
+    scenarioBody.innerHTML = '<p class="loading">Loading ${appType}...</p>';
+
+    try {
+
+        //load apps
+        const resp = await fetch(`/static/snippets/${appType}.html`);
+        const respApp = await resp.text();
+        scenarioBody.innerHTML = respApp;
+
+        // fetch scenario from API
         const res = await fetch("/api/generate_scenario", {
             method: "POST",
-            headers: {"Content-Type": "spplication/json"},
-            body:JSON.stringify({type})
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({type:appType})
         });
 
-    const data = await res.json();
-    const sc= data.scenario;
-    currentMessage = sc.content;
+        const data = await res.json();
+        const sc = data.scenario || {};
 
-    // HTML Section for different UI with buttons!
+        //Save message text to analyze
+        currentMessage = sc.content || sc.message || sc.transcript || sc.text || "";
 
-    document.getElementById('scenarioTitle').innerText = sc.title || "New Message";
-    document.getElementById('scenarioContent').innerText = sc.content;
-    currentMessage = sc.content;
-    document.getElementById('feedback').innerText="";
+        //add listeners to buttons
+        const scamBtn = document.getElementById("markScam");
+        const safeBtn = document.getElementById("markSafe")
+        if(scamBtn) scamBtn.onclick = () => markAs("scam");
+        if(safeBtn) safeBtn.onclick = () => markAs("not_scam");
+
+    } catch (err) {
+        console.error("Error loading scenario", err);
+        scenarioBody.innerHTML = `<p class="error">Failed to load ${appType}. Try again.</p>`;
+    }
 }
 
-async function analyze(choice) {
-    const res = await fetch('/api/analyze', {
-        method:'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-            user_choice: choice,
-            message: currentMessage
-        })
-    });
-    const data = await res.json();
-    const fd= data.feedback;
-    document.getElementById('feedback').innerText = (fd.correct ? "✅ Correct! " : "❌ Incorrect. ") + (fd.feedback || "");
+//scenarios for each application
+function scenario(appType, scenario) {
+   if(appType === "email"){
+       document.querySelector(".sender-name").innerText = escapeHTML(scenario.sender_name || scenario.from || "Unknown Sender");
+       document.querySelector(".sender-address").innerText = escapeHTML(scenario.sender_email || "");
+       document.querySelector(".email-subject").innerText = escapeHTML(scenario.subject || scenario.title || "");
+       document.querySelector(".email-body").innerText = escapeHTML(scenario.content || scenario.message || "");
+    } else if (appType === "sms") {
+       document.querySelector(".sms-header strong").innerText = escapeHTML(scenario.sender || scenario.from || "Unknown");
+       document.querySelector(".sms-number").innerText = escapeHTML(scenario.number || "");
+       document.querySelector(".sms-bubble").innerText = escapeHTML(scenario.message || scenario.content || "");
+    } else if (appType === "call") {
+       document.querySelector(".call-caller strong").innerText = escapeHTML(scenario.caller || "Unknown");
+       document.querySelector(".call-number").innerText = escapeHTML(scenario.number || "");
+       document.querySelector(".call-transcript").innerText = escapeHTML(scenario.transcript || scenario.content || "");
+    } else if (appType === "web") {
+       document.querySelector(".web-header strong").innerText = escapeHTML(scenario.site || scenario.title || "Website");
+       document.querySelector(".web-text").innerText = escapeHTML(scenario.content || scenario.text || "");
+       const imgTag = document.querySelector(".web-screenshot");
+       if (imgTag && scenario.screenshot) imgTag.src = `/static/images/${scenario.screenshot}`;
+    }
+   }
 
-            }
+   //Analyze users choice of scam or not scam
+async function markAs(choice) {
+    try{
+        const res = await fetch("/api/analyze", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                user_choice: choice,
+                message: currentMessage,
+                type: currentType
+            })
+        });
+
+        const data = await res.json();
+        const fb = data.feedback || {};
+        const correct = fb.correct === true || fb.correct === "true";
+        const text = fb.feedback || fb.text || "";
+
+        const feedbackDiv = document.getElementById("feedback");
+        if (feedbackDiv) {
+            feedbackDiv.innerText = (correct ? "✅ Correct. " : "❌ Incorrect. ") + text;
+            feedbackDiv.style.color = correct ? "green" : "crimson";
+        }
+
+    } catch (err) {
+        console.error("Error analyzing:", err);
+        const feedbackDiv = document.getElementById("feedback");
+        if (feedbackDiv) {
+            feedbackDiv.innerText = "Error analyzing. Try again.";
+            feedbackDiv.style.color = "crimson";
+        }
+    }
+}
+
+// Escape HTML to prevent injection
+function escapeHTML(unsafe) {
+    if (unsafe === null || unsafe === undefined) return '';
+    return String(unsafe)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;")
+        .replaceAll("\n", "<br>");
+}
+
+// Go back to app grid
+function backToApps() {
+    document.getElementById("scenarioBody").innerHTML = "";
+    document.querySelector(".apps").style.display = "grid";
+}
+
+//analyze users choice and give feedback
+async function analyze(choice) {
+    try {
+        const res = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                user_choice: choice,
+                message: currentMessage,
+                type: currentType
+            })
+        });
+        const data = await res.json();
+        const fd = data.feedback || data;
+        const text = fb.feeback || fb.text || '';
+        const correct = fb.correct === true || fb.correct === "true";
+        feedback(currentType, (correct ? "✅ Correct. " : "❌ Incorrect. ") + (text || ''), correct);
+    } catch (err) {
+        console.error('analyze error', err);
+        feedback(currentType, 'Error analyzing. Try again.');
+    }
+}
 

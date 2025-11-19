@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phone App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mobileStyle.css' )}}">
+</head>
+<body>
+<div class="call-app">
+  <header class="call-toolbar">
+    <button onclick="backToApps()">← Home</button>
+    <h2>Phone Call</h2>
+  </header>
+
+  <div class="call-info">
+    <p><strong id="callerName">Caller Name</strong></p>
+    <p id="callerNumber">+1 234 567 890</p>
+  </div>
+
+  <div class="call-transcript" id="callTranscript">
+    <!-- text of call snippet -->
+  </div>
+
+  <div class="actions">
+    <button onclick="analyze('scam')">Report Scam Call</button>
+    <button onclick="analyze('not_scam')">Looks Safe</button>
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+</div>
+
+
+    <script src = "{{ url_for('static', filename='script.js' )}}"></script>
+    <script>loadModule('phone');</script>
+
+</body>
+</html>

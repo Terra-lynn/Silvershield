@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mobileStyle.css') }}">
+</head>
+<body>
+    <div class="email-view">
+         <!-- Top Toolbar -->
+    <header class="email-toolbar">
+        <button class="back-btn" onclick="window.location.href='/'">←</button>
+        <div class="toolbar-actions">
+            <button>Archive</button>
+            <button>Delete</button>
+            <button>Mark as Spam</button>
+        </div>
+    </header>
+
+    <!-- Sender Info -->
+    <div class="sender-section">
+        <img src="{{ url_for('static', filename='images/default_avatar.png') }}" class="sender-avatar" alt="Avatar">
+        <div class="sender-details">
+            <p class="sender-name" id="senderName">Sender Name</p>
+            <p class="sender-address" id="senderAddress">email@domain.com</p>
+        </div>
+    </div>
+
+    <!-- Subject -->
+    <h2 class="email-subject" id="emailSubject">Email Subject</h2>
+
+    <!-- Body -->
+    <div class="email-body" id="emailBody">
+        Email content goes here...
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="email-actions">
+        <button onclick="analyze('scam')" class="danger">Mark as Scam</button>
+        <button onclick="analyze('not_scam')" class="safe">Safe</button>
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback" class="feedback"></div>
+
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadScenario('email'); //fetch email when page is loaded
+        });
+    </script>
+
+</body>
+</html>

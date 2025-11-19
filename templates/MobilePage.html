@@ -20,22 +20,22 @@
             <div class="apps">
                 <h2>Select an app:</h2>
                 <div class="app-buttons">
-                    <button onclick="loadScenario('email')">
+                    <button onclick="window.location.href='/email'">
                         <img src="{{url_for('static', filename='images/email.jpeg')}}" alt="Email">
                         <span>Email</span>
                     </button>
 
-                     <button onclick="loadScenario('web')">
+                     <button onclick="window.location.href='/web'">
                         <img src="{{url_for('static', filename='images/web.jpeg')}}" alt="Web">
                         <span>Web</span>
                     </button>
 
-                     <button onclick="loadScenario('call')">
+                     <button onclick="window.location.href='/phone'">
                         <img src="{{url_for('static', filename='images/call.jpeg')}}" alt="Calls">
                         <span>Calls</span>
                     </button>
 
-                     <button onclick="loadScenario('sms')">
+                     <button onclick="window.location.href='/sms'">
                         <img src="{{url_for('static', filename='images/message.jpeg')}}" alt="Messages">
                         <span>Messages</span>
                     </button>

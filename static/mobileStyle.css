@@ -96,27 +96,102 @@
 }
 
 
-/*
-.scenario{
-    margin-top: 20px;
-    text-align: left;
+
+/* Email */
+.email-open { background:#fff; border-radius:8px; padding:10px; }
+.email-header-row { display:flex; gap:10px; align-items:center; }
+.email-logo { width:48px; height:48px; border-radius:8px; object-fit:cover; }
+.email-sender-block .sender-name { font-weight:700; }
+.email-subject { margin-top:10px; color:#333; font-size:1rem; }
+.email-body { margin-top:12px; background:#f6f8fb; padding:10px; border-radius:6px; color:#222; }
+
+/* SMS */
+.sms-header { font-weight:700; margin-bottom:8px; }
+.sms-bubble { display:inline-block; background:#dcf8c6; padding:10px 14px; border-radius:16px; max-width:80%; }
+
+/* Call */
+.call-card { background:#fff; padding:12px; border-radius:8px; }
+.call-transcript { margin-top:10px; padding:8px; background:#f3f3f3; border-radius:8px; }
+
+/* Web */
+.web-card { background:#fff; padding:12px; border-radius:8px; }
+.web-screenshot { width:100%; max-height:160px; object-fit:cover; border-radius:6px; margin-top:8px; }
+.web-text { margin-top:8px; }
+
+/* Actions + feedback */
+.actions { display:flex; justify-content:center; gap:12px; margin-top:12px; }
+.actions button { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; }
+.actions .danger { background:#e74c3c; color:#fff; }
+.actions .safe { background:#2ecc71; color:#fff; }
+.feedback { margin-top:12px; text-align:center; font-weight:700; padding:8px; min-height:24px; }
+
+/* Utility */
+.hidden { display:none; }
+.loading { color:#666; font-style:italic; }
+
+/*web search */
+.web-app {
+  /* similar to your phone container style */
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+}
+.web-search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.web-search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.web-search-bar button {
+  padding: 10px 16px;
+  background: #0078ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.web-result-card {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
 }
 
-.actions button{
-    margin: 5px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+
+
+/* message UI   */
+.sms-thread {
+  padding: 10px;
+  background: #f6f8fc;
+  height: 400px; /* or whatever */
+  overflow-y: auto;
+}
+.sms-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  line-height: 1.4;
+}
+.sms-bubble.outgoing {
+  background: #dcf8c6;
+  align-self: flex-end;
+}
+.sms-bubble.incoming {
+  background: #fff;
+  align-self: flex-start;
 }
 
-.feedback{
-    margin-top: 10px;
-    padding: 10px;
-    background: rgba(255, 255,255,0.1);
-    border-radius: 8px;
-}
-
-.hidden{
-    display:none;
+/* Calls UI   */
+.call-transcript {
+  padding: 12px;
+  background: #f3f3f3;
+  margin: 10px 0;
+  border-radius: 6px;
+  line-height: 1.4;
 }
