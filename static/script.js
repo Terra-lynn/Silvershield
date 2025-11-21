@@ -642,32 +642,107 @@ if(sendOTPBtn)
       Email Functions
 **************************/
 document.addEventListener("DOMContentLoaded", () => {
+
     const emailIcon = document.querySelector('.icon.email');
     const emailWindow = document.getElementById('emailWindow');
-
     const internetIcon = document.querySelector('.icon.internet');
     const internetWindow = document.getElementById('internetWindow');
 
+    const rfContainer = document.getElementById("emailButtons");
+    const realBtn = document.getElementById("realBtn");
+    const fakeBtn = document.getElementById("fakeBtn");
+
+    let lastGeneratedEmail = "";
+
+    async function loadEmail() {
+    const emailContent = document.getElementById("emailContent");
+
+    emailContent.innerHTML = "Generating training email...";
+
+    try {
+        const response = await fetch("/generate-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ theme: "Email Scam Training" })
+        });
+
+        const data = await response.json();
+
+        // ✅ FIX: must also check data.success
+        if (data.success && data.email) {
+            emailContent.innerHTML = data.email;
+            lastGeneratedEmail = data.email;
+
+            // Show REAL / FAKE buttons
+            rfContainer.style.display = "block";
+        } else {
+            console.error("Backend error:", data.error);
+            emailContent.innerText = "Server error generating email.";
+        }
+
+    } catch (err) {
+        console.error("Fetch error:", err);
+        emailContent.innerText = "Server error.";
+    }
+}
+
+
     if (emailIcon && emailWindow) {
-        emailIcon.addEventListener('click', () => {
-            emailWindow.style.display = 'block';
+        emailIcon.addEventListener("click", () => {
+            emailWindow.style.display = "block";
+            loadEmail();
         });
     }
 
     if (internetIcon && internetWindow) {
-        internetIcon.addEventListener('click', () => {
-            internetWindow.style.display = 'block';
+        internetIcon.addEventListener("click", () => {
+            internetWindow.style.display = "block";
         });
     }
+
+    async function sendUserAnswer(choice) {
+        try {
+            const response = await fetch("/api/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_choice: choice,
+                    message: lastGeneratedEmail
+                })
+            });
+
+            const data = await response.json();
+
+        if (data.success) {
+            const correct = data.feedback.correct;
+            const explanation = data.feedback.feedback;
+            const newDifficulty = data.difficulty_now;
+
+            alert(
+                explanation +
+                `\n\n(Current difficulty: ${newDifficulty})`
+            );
+
+            // Auto-generate new email
+            loadEmail();
+            } else {
+            alert("Error analyzing response.");
+            }
+
+        } catch (err) {
+        console.error("Error analyzing user choice:", err);
+        alert("Server error analyzing response.");
+        }
+    }
+
+    realBtn.addEventListener("click", () => sendUserAnswer("real"));
+    fakeBtn.addEventListener("click", () => sendUserAnswer("fake"));
 
     const closeBtn = document.querySelectorAll('.popup-close');
     closeBtn.forEach(btn => {
         btn.addEventListener('click', () => {
             const popup = btn.closest('.popup');
-            if (popup)
-            {
-                popup.style.display = 'none';
-            }
+            if (popup) popup.style.display = 'none';
         });
     });
 });

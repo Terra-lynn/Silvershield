@@ -32,6 +32,21 @@
             <div class = "popup-header">Email
             <span class = "popup-close">X</span>
             </div>
+
+            <div class = "popup-body">
+                <div id = "emailContent" class = "email-overlay">
+                    Loading...
+                </div>
+
+                <!-- REAL / FAKE BUTTONS (added below overlay box) -->
+                <div id="emailButtons" class="rf-container" style="display:none;">
+                    <button id="realBtn" class="rf-btn real">REAL</button>
+                    <button id="fakeBtn" class="rf-btn fake">FAKE</button>
+                </div>
+
+                <!-- Feedback Area -->
+                <div id = "emailFeedback" class = "feedback-box" style = "display:none;"></div>
+            </div>
         </div>
 
         <!--Internet Popup-->
