@@ -8,7 +8,8 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                 email TEXT UNIQUE NOT NULL,
                 phone TEXT UNIQUE NOT NULL,
                 address TEXT NOT NULL,
-                password_hash TEXT NOT NULL )
+                password_hash TEXT NOT NULL, 
+                difficulty INTEGER DEFAULT 1)
 ''')
 connect.commit()
 connect.close()
