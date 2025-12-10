@@ -9,7 +9,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                 phone TEXT UNIQUE NOT NULL,
                 address TEXT NOT NULL,
                 password_hash TEXT NOT NULL, 
-                difficulty INTEGER DEFAULT 1)
+                difficulty_email_desktop INTEGER DEFAULT 1,
+                difficulty_internet_desktop INTEGER DEFAULT 1,
+                difficulty_email_mobile INTEGER DEFAULT 1,
+                difficulty_sms_mobile INTEGER DEFAULT 1,
+                difficulty_call_mobile INTEGER DEFAULT 1,
+                difficulty_web_mobile INTEGER DEFAULT 1)
 ''')
 connect.commit()
 connect.close()
