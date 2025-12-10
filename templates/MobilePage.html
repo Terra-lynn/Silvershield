@@ -9,79 +9,49 @@
 </head>
 <body>
 
-    <main>
-        <div class="phone">
-            <div class="phone-header">
-                <span class = "time">3:09</span>
-                <span class = "camera">⚫</span>
-                <span class = "icons">📶 🛜 🔋</span>
-            </div>
+<main>
+    <div class="phone">
 
-            <div class="apps">
-                <h2>Select an app:</h2>
-                <div class="app-buttons">
-                    <button onclick="loadScenario('email')">Email</button>
-                    <button onclick="loadScenario('sms')">Text</button>
-                    <button onclick="loadScenario('call')">Call</button>
-                    <button onclick="loadScenario('web')">Web</button>
-                </div>
-            </div>
+        <!-- PHONE HEADER -->
+        <div class="phone-header">
+            <span class="time">3:09</span>
+            <span class="camera">⚫</span>
+            <span class="icons">📶 🛜 🔋</span>
+        </div>
 
-            <div id="scenario" class="scenario not shown">
-                <h3 id="scenarioTitle"></h3>
-                <p id="scenarioContent"></p>
+        <!-- APP SELECTION SCREEN -->
+        <div class="apps" id="appMenu">
+            <h2>Select an app:</h2>
+            <div class="app-buttons">
 
-                <div class="actions">
-                    <button onclick="analyze('scam')">Mark as Scam</button>
-                    <button onclick="analyze('not_scam')">Looks Safe</button>
-                </div>
+                <button onclick="openApp('email')">
+                    <img src="{{url_for('static', filename='images/email.jpeg')}}" alt="Email">
+                    <span>Email</span>
+                </button>
 
-                <div id="feedback" class="feedback"></div>
+                <button onclick="openApp('web')">
+                    <img src="{{url_for('static', filename='images/web.jpeg')}}" alt="Web">
+                    <span>Web</span>
+                </button>
 
-                 <button onclick="loadScenario(currentType)">Next Scenario</button>
+                <button onclick="openApp('call')">
+                    <img src="{{url_for('static', filename='images/call.jpeg')}}" alt="Calls">
+                    <span>Phone</span>
+                </button>
+
+                <button onclick="openApp('sms')">
+                    <img src="{{url_for('static', filename='images/message.jpeg')}}" alt="Messages">
+                    <span>Messages</span>
+                </button>
+
             </div>
         </div>
 
-        <script>
-            let currentMessage ="";
-            let currentType ="";
+        <!-- Scenario content -->
+        <div id ="scenarioBody" class="scenario"></div>
 
-            async function loadScenario(type){
-                currentType=type;
-                document.getElementById('scenario').classList.remove('hidden');
-                document.getElementById('feedback').innerText = "Loading...";
-
-                const res = await fetch('/api/generate_scenario', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({type})
-                });
-                const data = await res.json();
-                const sc= data.scenario;
-
-                document.getElementById('scenarioTitle').innerText = sc.title || "New Message";
-                document.getElementById('scenarioContent').innerText = sc.content;
-                currentMessage = sc.content;
-                document.getElementById('feedback').innerText="";
-            }
-
-            async function analyze(choice) {
-                const res = await fetch('/api/analyze', {
-                    method:'POST',
-                    headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({
-                        user_choice: choice,
-                        message: currentMessage
-                    })
-                });
-                const data = await res.json();
-                const fd = data.feedback;
-                document.getElementById('feedback').innerText = (fd.correct ? "Correct! " : "Incorrect. ") + (fd.feedback || "");
-
-            }
-        </script>
-
-    </main>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </div>
+</main>
+   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
