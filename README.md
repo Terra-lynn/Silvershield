@@ -21,22 +21,18 @@ Prerequisies:
   - (Optional) Virtual Environment
 
 Installation & Run
-# Clone the repo
+1. Clone the repo
 git clone https://github.com/Terra-lynn/Silvershield.git
 cd Silvershield
 
-# (Recommended) create virtualenv
-python -m venv venv
-source venv/bin/activate  # (on Windows: venv\Scripts\activate)
-
-# Install dependencies
+2. Install dependencies
 pip install -r requirements.txt   # or manually install Flask, requests, etc.
 
-# Create `.env` or config file for API keys
-# Example: config/GROQKEY.py containing GROQ_KEY = "<your_key>"
-# And config/TWILIOKEY.py if using Twilio for OTP
+3. Create a .env or config file for API keys
+- Example: config/GROQKEY.py containing GROQ_KEY = "<your_key>"
+- Example: config/TWILIOKEY.py if using Twilio for OTP
 
-# Run the server
+4. Run the server
 python app.py
 
 NOTE: You will need to create a GROQ and Twilio account to generate the neccessary keys for this project to work.
